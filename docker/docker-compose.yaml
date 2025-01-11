@@ -1,25 +1,29 @@
-version: '3'
+version: '3.8'
 
 services:
   db:
     image: mysql:8.0
+    container_name: mysql-keycloack
     environment:
-      MYSQL_ROOT_PASSWORD: my_password
-      MYSQL_USER: my_admin
-      MYSQL_PASSWORD: my_password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
       MYSQL_DATABASE: keycloak_db
     ports:
       - 3306:3306
+    volumes:
+      - mysql_keycloak_data:/var/lib/mysql
 
   kc:
     image: quay.io/keycloak/keycloak:latest
+    container_name: keycloack
     environment:
       DB_VENDOR: mysql
       DB_ADDR: db
       DB_DATABASE: keycloak_db
-      DB_USER: my_admin
-      DB_PASSWORD: my_password
-      KEYCLOAK_HOSTNAME: localhost
+      DB_USER: admin
+      DB_PASSWORD: password
+      KEYCLOAK_HOSTNAME: keycloack
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: password
     ports:
@@ -28,3 +32,26 @@ services:
       - db
     command:
       - start-dev
+
+################## SCHEDULE MICROSERVICE ##################
+  db_schedule:
+    image: mysql:8.0
+    container_name: mysql-schedule
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: schedule_db
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_schedule_data:/var/lib/mysql
+    profiles:
+      - schedule-service
+
+################## SCHEDULE MICROSERVICE ##################
+
+volumes:
+  mysql_keycloak_data:
+  mysql_schedule_data:
