@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScreeningDTO {
     private Long id;
-    private Long movieId;
+    private MovieDTO movie;
     private Integer cinemaHallId;
     private LocalDateTime dateOfBeginning;
 }
