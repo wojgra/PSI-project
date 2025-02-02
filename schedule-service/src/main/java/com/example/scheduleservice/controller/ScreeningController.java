@@ -38,4 +38,11 @@ public class ScreeningController {
     public ResponseEntity<ScreeningDTO> getScreeningById(@PathVariable Long id) {
         return ResponseEntity.ok(screeningService.getScreeningById(id));
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteScreening(@PathVariable Long id) {
+        screeningService.deleteScreening(id);
+        return ResponseEntity.noContent().build();
+    }
 }

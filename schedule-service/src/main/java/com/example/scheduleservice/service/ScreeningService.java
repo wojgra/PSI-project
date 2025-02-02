@@ -66,4 +66,10 @@ public class ScreeningService {
 
         return screeningMapper.toScreeningDTO(screening);
     }
+
+    public void deleteScreening(Long id) {
+        Screening screening = screeningRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Screening not found"));
+        screeningRepository.delete(screening);
+    }
 }

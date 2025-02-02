@@ -38,4 +38,11 @@ public class MovieController {
     public ResponseEntity<MovieDTO> getMovieById(@PathVariable Long id) {
         return ResponseEntity.ok(movieService.getMovieById(id));
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
+        movieService.deleteMovie(id);
+        return ResponseEntity.noContent().build();
+    }
 }

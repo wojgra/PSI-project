@@ -62,4 +62,10 @@ public class MovieService {
                 .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
         return movieMapper.toMovieDTO(movie);
     }
+
+    public void deleteMovie(Long id) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
+        movieRepository.delete(movie);
+    }
 }
