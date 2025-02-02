@@ -23,9 +23,9 @@ services:
       DB_DATABASE: keycloak_db
       DB_USER: admin
       DB_PASSWORD: password
-      KEYCLOAK_HOSTNAME: keycloack
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: password
+      KEYCLOAK_HOSTNAME: kc
     ports:
       - 9090:8080
     depends_on:
@@ -33,8 +33,17 @@ services:
     command:
       - start-dev
 
+  gateway-service:
+    image: gateway-service:latest
+    container_name: gateway-service
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - kc
+
 ################## SCHEDULE MICROSERVICE ##################
-  db_schedule:
+  db-schedule:
     image: mysql:8.0
     container_name: mysql-schedule
     restart: always
@@ -47,6 +56,18 @@ services:
       - 3307:3306
     volumes:
       - mysql_schedule_data:/var/lib/mysql
+    profiles:
+      - schedule-service
+
+  schedule-service:
+    image: schedule-service:latest
+    container_name: schedule-service
+    restart: always
+    depends_on:
+      - db-schedule
+      - kc
+    ports:
+      - 8081:8081
     profiles:
       - schedule-service
 

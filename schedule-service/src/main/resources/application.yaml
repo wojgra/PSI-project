@@ -5,18 +5,17 @@ spring:
   application:
     name: schedule-service
   datasource:
-    url: jdbc:mysql://localhost:3307/schedule_db
+    url: jdbc:mysql://db-schedule:3306/schedule_db
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9090/realms/cinema/protocol/openid-connect/certs
-          issuer-uri: http://localhost:9090/realms/cinema
+          jwk-set-uri: http://kc:8080/realms/cinema/protocol/openid-connect/certs
+#          issuer-uri: http://kc:8080/realms/cinema
 
