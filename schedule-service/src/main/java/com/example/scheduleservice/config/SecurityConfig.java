@@ -14,6 +14,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http.authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/schedule-service/test/public").permitAll()
+                                .requestMatchers("/api/schedule-service/movies").permitAll()
+                                .requestMatchers("/api/schedule-service/movies/*").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter("cinema-client"))));
