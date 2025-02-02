@@ -5,11 +5,10 @@ import com.example.scheduleservice.dto.response.MovieDTO;
 import com.example.scheduleservice.mapper.MovieMapper;
 import com.example.scheduleservice.model.Movie;
 import com.example.scheduleservice.repository.MovieRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +28,7 @@ public class MovieService {
 
     public MovieDTO updateMovie(Long id, MovieCreateDTO movieCreateDTO) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
 
         if (movieCreateDTO.getLengthInMins() != null) {
             movie.setLengthInMins(movieCreateDTO.getLengthInMins());
@@ -60,7 +59,7 @@ public class MovieService {
 
     public MovieDTO getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
         return movieMapper.toMovieDTO(movie);
     }
 }
